@@ -1,7 +1,7 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function InputCard() {
+export default function InputCard({allCards, setAllCards}) {
   const [name, setName] = useState("");
   const [des, setDes] = useState("");
 
@@ -13,6 +13,8 @@ export default function InputCard() {
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ Name: name, Description: des }),
       });
+      const updatedCards = [...allCards, { Name: name, Description: des }];
+      setAllCards(updatedCards)
     } catch (error) {
       console.log(error);
     }

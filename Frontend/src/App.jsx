@@ -1,29 +1,20 @@
 import { useState, useEffect } from "react";
 import reactLogo from "./assets/react.svg";
 import viteLogo from "/vite.svg";
-import InputCard from "./InputCard.jsx";
-import Card from "./Card.jsx";
+import InputCard from "./components/InputCard.jsx";
+import Card from "./components/Card.jsx";
 
 function App() {
-  const [cards, setCard] = useState({});
+  const [allCards, setAllCards] = useState([]);
   useEffect(() => {
-    // const data = fetch("http://localhost:3000/")
-    //   .then((res) => {
-    //     return res.json();
-    //   })
-    //   .then((res) => {
-    //     setCard(res);
-    //     return res;
-    //   });
-
     const fetchData = async () => {
       try {
         const response = await fetch("http://localhost:3000/");
         if (!response.ok) {
           throw new Error("Network response was not ok");
         }
-        const data = await response.json();
-        setCard(data);
+        const {cards} = await response.json();
+        setAllCards(cards);
       } catch (error) {
         console.error("Error fetching data:", error);
       }
@@ -34,10 +25,10 @@ function App() {
 
   return (
     <>
-      <InputCard name></InputCard>
+      <InputCard setAllCards={setAllCards} allCards={allCards}></InputCard>
       <div>
-        {Object.keys(cards).map((key) => (
-          <Card card={cards[key]}></Card>
+        {allCards.map((card) => (
+          <Card card={card} setAllCards={setAllCards} allCards={allCards} key={card._id}></Card>
         ))}
       </div>
     </>
