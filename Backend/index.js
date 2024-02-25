@@ -1,9 +1,11 @@
 const express = require("express");
 const Card = require("./db.js");
 const createCard = require("./types.js");
+const cors = require("cors");
 
 const app = express();
 app.use(express.json());
+app.use(cors());
 
 const newCard = new Card({
   Name: "Example Name",
@@ -35,9 +37,9 @@ app.patch("/", async (req, res) => {
   const data = req.body;
 });
 
-app.delete("/", async (req, res) => {
-  const name = req.body.Name;
-  await Card.deleteOne({ Name: name });
+app.delete("/:id", async (req, res) => {
+  const cardId = req.params.id;
+  await Card.findByIdAndDelete(cardId);
   res.json("Successfully deleted");
 });
 
