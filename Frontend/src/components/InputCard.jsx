@@ -1,20 +1,22 @@
 import { useState } from "react";
 import axios from "axios";
 
-export default function InputCard({allCards, setAllCards}) {
+export default function InputCard({ allCards, setAllCards }) {
   const [name, setName] = useState("");
   const [des, setDes] = useState("");
 
   async function handleSubmit(e) {
     e.preventDefault();
     try {
-      await fetch("http://localhost:3000/", {
+      const res = await fetch("http://localhost:3000/", {
         method: "POST",
         headers: { "Content-type": "application/json" },
         body: JSON.stringify({ Name: name, Description: des }),
       });
-      const updatedCards = [...allCards, { Name: name, Description: des }];
-      setAllCards(updatedCards)
+      if (res.ok) {
+        const updatedCards = [...allCards, { Name: name, Description: des }];
+        setAllCards(updatedCards);
+      }
     } catch (error) {
       console.log(error);
     }
